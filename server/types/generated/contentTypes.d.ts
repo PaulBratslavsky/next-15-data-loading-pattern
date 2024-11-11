@@ -369,6 +369,33 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPostPost extends Struct.CollectionTypeSchema {
+  collectionName: 'posts';
+  info: {
+    displayName: 'Post';
+    pluralName: 'posts';
+    singularName: 'post';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiResourceResource extends Struct.CollectionTypeSchema {
   collectionName: 'resources';
   info: {
@@ -909,6 +936,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::post.post': ApiPostPost;
       'api::resource.resource': ApiResourceResource;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
