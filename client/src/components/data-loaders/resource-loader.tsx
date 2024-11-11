@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { getResources } from "@/data/loaders";
 import { ThrowClientError } from "@/components/custom/throw-client-error";
 
@@ -24,9 +24,12 @@ export async function ResourceLoader({ component, path, query }: ResourceLoaderP
 
     if (resources.length === 0) return <>No resources found</>;
 
-    return resources.map((resource: any) => (
-      <Component key={resource.id} {...resource} />
-    ));
+    return <Suspense fallback={<div>Loading...</div>}>
+      {resources.map((resource: any) => (
+        <Component key={resource.id} {...resource} />
+      ))}
+    </Suspense>;
+    
   } catch (error) {
     return (
       <ThrowClientError
